@@ -1,26 +1,30 @@
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components/macro'
 import { useSelector } from 'react-redux'
 import { scrollbarDefault } from 'media/styles/scrollbar'
 import { boxShadowDefault } from 'media/styles/box-shadow'
 import { ReactComponent as CloseIcon } from 'media/icons/cross.svg'
 import AddImagePlug from './add-image-plug'
+import { deleteImage } from 'store/images.slice'
 
 export default function SelectedImages() {
 
-    const images = useSelector(state => [
-        'https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg',
-        'https://media.istockphoto.com/photos/picturesque-morning-in-plitvice-national-park-colorful-spring-scene-picture-id1093110112?k=20&m=1093110112&s=612x612&w=0&h=3OhKOpvzOSJgwThQmGhshfOnZTvMExZX2R91jNNStBY='
-    ]);
+    const images = useSelector(state => state.images.items);
+    const dispatch = useDispatch()
+
+    const onImageDelete = (url) => {
+        dispatch(deleteImage(url))
+    }
 
     return (
         <StyledSection>
             {images.map((item, index) => (
                 <StyledImage key={`image-${item}`}>
                     <img src={item} alt={`Selected image number ${index + 1}`}></img>
-                    <CloseIcon />
+                    <CloseIcon  onClick={() => onImageDelete(item)}/>
                 </StyledImage>
             ))}
-            <AddImagePlug />
+            {!images.length && <AddImagePlug />}
         </StyledSection>
     )
 }
@@ -68,7 +72,6 @@ const StyledImage = styled.div`
         }
     }
     &:hover {
-        transform: scale(1.01);
         svg {
             opacity: 1;
             path {

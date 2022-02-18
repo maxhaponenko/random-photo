@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 import { boxShadowDefault } from 'media/styles/box-shadow'
-import { ReactComponent as PlusIcon } from 'media/icons/plus.svg'
+import { ReactComponent as ImageIcon } from 'media/icons/image.svg'
 
 const AddImagePlug = ({ onAddImage }) => {
 
 
     return (
         <StyledPlug onClick={onAddImage}>
-            <PlusIcon />
+            <ImageIcon />
             <span>Add an image</span>
         </StyledPlug>
     )
