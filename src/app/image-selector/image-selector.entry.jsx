@@ -1,46 +1,47 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useMemo, useCallback } from 'react'
 import styled, { css } from 'styled-components/macro'; //TODO improve class naming
 import { boxShadowDefault } from 'media/styles/box-shadow'
-import { ReactComponent as PlusIcon } from 'media/icons/plus.svg'
+import { ReactComponent as ImageIcon } from 'media/icons/image.svg'
 import Button from 'components/button'
 import Loader from 'components/loader'
-import { fetchRandomImage, addImage } from 'store/images.slice'
+import { fetchRandomImage, addImage, skipImage } from 'store/image-selector.slice'
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 
-export default function AddImage(props) {
+export default function ImageSelector() {
 
     const dispatch = useDispatch()
-    const [isInitialState, setIsInitialState] = useState(true);
-    const isProcessing = useSelector(state => state.images.isLoading)
-    const candidate = useSelector(state => state.images.candidate)
+    const isSelectProcessStarted = useSelector(state => state.imageSelector.isSelectProcessStarted)
+    const isProcessing = useSelector(state => state.imageSelector.isLoading)
+    const candidate = useSelector(state => state.imageSelector.candidate)
 
     const loadImage = useCallback(() => {
-        setIsInitialState(false);
         dispatch(fetchRandomImage())
-    })
+    }, [dispatch])
 
     const renderImageSection = useMemo(() => {
-
-        
-
-        if (candidate) {
+        if (candidate && isSelectProcessStarted) {
             return (
-                <img src={candidate} onClick={() => {}}>
+                <img src={candidate.urls.regular} alt={candidate.description}>
                 </img>
             )
         } else {
             return (
                 <div className="plug" onClick={loadImage}>
-                    <PlusIcon />
+                    <ImageIcon />
                     <span>Add an image</span>
                 </div>
             )
         }
-    }, [candidate, setIsInitialState])
+    }, [candidate, isSelectProcessStarted, loadImage])
 
-    const addImageToCollection = () => {
+    
+    function addImageToCollection() {
         dispatch(addImage(candidate))
+        loadImage()
+    }
+    function skipAndLoadNewImage() {
+        dispatch(skipImage())
         loadImage()
     }
     
@@ -51,9 +52,9 @@ export default function AddImage(props) {
                 <div className="image-container">
                     {isProcessing ? <Loader /> : renderImageSection}
                 </div>
-                {!isInitialState && (
+                {isSelectProcessStarted && (
                     <div className="actions">
-                        <Button size="large" type="secondary" >Skip</Button>
+                        <Button size="large" type="secondary" onClick={skipAndLoadNewImage} >Skip</Button>
                         <Button size="large" onClick={addImageToCollection}>Add</Button>
                     </div>
                 )}
@@ -86,8 +87,13 @@ const Styled = styled.div`
         pointer-events: none;
     `}
 
+    @media (max-width: 500px) {
+        margin-top: 30px;
+    }
+
     .container {
         width: 400px;
+        max-width: 100%;
         min-height: 400px;
         margin: 0 auto;
     }
@@ -96,9 +102,17 @@ const Styled = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
+        
+        @media (max-width: 500px) {
+            height: 350px;
+        }
+
         img {
-            width: auto;
+            width: 100%;
             height: 100%;
+            object-fit: contain;
+            border-radius: 7px;
+            ${boxShadowDefault}
         }
         .plug {
             width: 100%;
@@ -116,7 +130,7 @@ const Styled = styled.div`
                 border-color: #7dc78e;
                 cursor: pointer;
                 svg {
-                    transform: scale(1.45) rotate(3deg);
+                    transform: scale(1.02) rotate(3deg);
                 }
                 path {
                     fill: #37b038;
@@ -124,7 +138,8 @@ const Styled = styled.div`
             }
             svg {
                 margin-right: 20px;
-                transform: scale(1.4);
+                width: 40px;
+                transition: all 150ms ease-in-out;
                 path {
                     fill: #74cc75;
                     transition: all 150ms ease-in-out;
