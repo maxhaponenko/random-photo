@@ -1,16 +1,22 @@
-import styled from 'styled-components'
+import { forwardRef } from 'react'
+import styled, { css } from 'styled-components'
+import PropTypes from 'prop-types'
 import { boxShadowDefault } from 'media/styles/box-shadow'
-import { ReactComponent as ImageIcon } from 'media/icons/image.svg'
+import { ReactComponent as PlusIcon } from 'media/icons/plus.svg'
 
-const AddImagePlug = ({ onAddImage }) => {
-
-
+const AddImagePlug = ({ onClick, mobileView, innerRef }) => {
     return (
-        <StyledPlug onClick={onAddImage}>
-            <ImageIcon />
+        <StyledPlug onClick={onClick} mobileView={mobileView} ref={innerRef} >
+            <PlusIcon />
             <span>Add an image</span>
         </StyledPlug>
     )
+}
+
+AddImagePlug.propTypes = {
+    onCLick: PropTypes.func,
+    mobileView: PropTypes.bool.isRequired,
+    innerRef: PropTypes.any.isRequired
 }
 
 const StyledPlug = styled.div`
@@ -19,7 +25,6 @@ const StyledPlug = styled.div`
     border-radius: 7px;
     padding: 20px;
     overflow: hidden;
-    transition: all 150ms ease-in-out;
     background-color: #f4f4f459;
     display: flex;
     justify-content: center;
@@ -42,8 +47,6 @@ const StyledPlug = styled.div`
     }
 
     svg {
-        width: 30px;
-        height: 30px;
         margin-right: 12px;
         transition: all 150ms ease-in-out;
         path {
@@ -56,6 +59,33 @@ const StyledPlug = styled.div`
         color: #4bab4c;
         transition: all 150ms ease-in-out;
     }
+
+    ${props => props.mobileView && css`
+        transition: none;
+        position: fixed;
+        padding: 5px;
+        width: 60px;
+        height: 50px;
+        right: -10px;
+        top: 150px;
+        transform: translate(0, -50%);
+        background-color: white;
+
+        @media (max-width: 500px) {
+            top: 129px;
+        }
+        
+        span {
+            display: none;
+        }
+        svg {
+            margin-right: 10px;
+        }
+        &:hover {
+            transform: translate(-3%, -50%);
+        }
+    `}
+
 `
 
-export default AddImagePlug
+export default forwardRef((props, ref) => <AddImagePlug innerRef={ref} {...props} />)
