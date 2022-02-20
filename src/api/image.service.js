@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify'
 import mock from './api-model'
 
 const accessKey = '876Y7xsH8h4DDyyYY9OOGcvXdtcE5Vg7YBfQcJjTnMc'
@@ -6,11 +7,19 @@ const accessKey = '876Y7xsH8h4DDyyYY9OOGcvXdtcE5Vg7YBfQcJjTnMc'
 export class ImageService {
 
     static async loadRandomImage() {
-        const response = await fetch(`https://api.unsplash.com/photos/random?client_id=${accessKey}`)
-        const data = await response.json()
-
-        console.log(data)
-        return data
+        try {
+            const response = await fetch(`https://api.unsplash.com/photoss/random?client_id=${accessKey}`)
+            const status = response.status
+            const data = await response.json()
+            
+            if (status !== 200) {
+                toast(data.errors.join('; '), { type: 'error' })
+            } else {
+                return data
+            }
+        } catch (err) {
+            throw err
+        }
     }
 
     static async emulateLoadImage() {

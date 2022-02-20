@@ -18,9 +18,19 @@ export default function ImageSelector() {
     const loadImage = useCallback(() => {
         dispatch(fetchRandomImage())
     }, [dispatch])
+    
+    function addImageToCollection() {
+        dispatch(addImage(candidate))
+        loadImage()
+    }
+    function skipAndLoadNewImage() {
+        dispatch(skipImage())
+        loadImage()
+    }
 
-    const renderImageSection = useMemo(() => {
+    const imageSection = useMemo(() => {
         if (candidate && isSelectProcessStarted) {
+            // debugger
             return (
                 <img src={candidate.urls.regular} alt={candidate.description}>
                 </img>
@@ -35,22 +45,11 @@ export default function ImageSelector() {
         }
     }, [candidate, isSelectProcessStarted, loadImage])
 
-    
-    function addImageToCollection() {
-        dispatch(addImage(candidate))
-        loadImage()
-    }
-    function skipAndLoadNewImage() {
-        dispatch(skipImage())
-        loadImage()
-    }
-    
-
     return (
         <Styled processing={isProcessing}>
             <div className="container">
                 <div className="image-container">
-                    {isProcessing ? <Loader /> : renderImageSection}
+                    {isProcessing ? <Loader /> : imageSection}
                 </div>
                 {isSelectProcessStarted && (
                     <div className="actions">

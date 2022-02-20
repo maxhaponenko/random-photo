@@ -1,7 +1,7 @@
 import { SquareLoader } from "react-spinners"; 
 import styled from 'styled-components/macro'
 
-export default function () {
+export default function Loader() {
     return <StyledLoader>
         <SquareLoader color="#37B038" />
     </StyledLoader>

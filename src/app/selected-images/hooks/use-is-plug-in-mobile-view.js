@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 
 const GAP_BETWEEN_ELEMENTS = 15;
@@ -7,45 +7,38 @@ const DESKTOP_PLUG_WIDTH = 270
 
 export function useIsPlugInMobileView(containerRef) {
     
-    const [containerWidth, setContainerWidth] = useState(0)
-    const [isMobileView, setIsMobileView] = useState(false)
+    const [isMobileView, setIsMobileView] = useState(null)
 
     const computeIsMobileView = useCallback(() => {
 
         const containerWidth = containerRef.current.offsetWidth
+        
         const contentBiggerThanViewport = (containerWidth + DESKTOP_PLUG_WIDTH + GAP_BETWEEN_ELEMENTS + EXTRA_SPACE) >= window.innerWidth
         const contentSmallerThanViewport = (containerWidth + DESKTOP_PLUG_WIDTH + GAP_BETWEEN_ELEMENTS + EXTRA_SPACE) <= window.innerWidth
 
         if (contentBiggerThanViewport && !isMobileView) {
-            debugger
             setIsMobileView(true)
         } else if (contentSmallerThanViewport && isMobileView) {
-            debugger
             setIsMobileView(false)
         }
 
-    }, [isMobileView])
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(() => {
-        if (containerRef.current) {
-            const newContainerWidth = containerRef.current.offsetWidth
-            if (containerWidth !== newContainerWidth) {
-                computeIsMobileView()
-            }
+        if (isMobileView === null) {
+            setIsMobileView(contentBiggerThanViewport ? true : false)
         }
-    })
 
+    }, [isMobileView, containerRef])
+
+    
     useEffect(() => {
-        console.log('triggered')
         window.addEventListener('resize', computeIsMobileView)
-        const timer = setTimeout(() => {
+        // need to wait a bit while images will be fetched and rendered in DOM
+        setTimeout(() => {
             computeIsMobileView()
-        }, 1000)
+        }, 500)
         return () => {
             window.removeEventListener('resize', computeIsMobileView)
-            clearTimeout(timer)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return isMobileView

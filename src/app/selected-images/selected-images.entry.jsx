@@ -16,6 +16,7 @@ export default function SelectedImages() {
 
     const images = useSelector(state => state.imageSelector.items);
     const isSelectProcessStarted = useSelector(state => state.imageSelector.isSelectProcessStarted)
+    const candidate = useSelector(state => state.imageSelector.candidate)
     const dispatch = useDispatch()
 
     const loadImage = useCallback(() => {
@@ -38,7 +39,7 @@ export default function SelectedImages() {
                     </StyledImage>
                 ))}
             </div>
-            {!isSelectProcessStarted && <AddImagePlug ref={plugRef} onClick={loadImage} mobileView={isPlugInMobileView} />}
+            {!isSelectProcessStarted || !candidate && <AddImagePlug ref={plugRef} onClick={loadImage} mobileView={isPlugInMobileView} />}
         </StyledSection>
     )
 }

@@ -5,6 +5,7 @@ import { boxShadowDefault } from 'media/styles/box-shadow'
 import { ReactComponent as PlusIcon } from 'media/icons/plus.svg'
 
 const AddImagePlug = ({ onClick, mobileView, innerRef }) => {
+    if (mobileView === null) return null
     return (
         <StyledPlug onClick={onClick} mobileView={mobileView} ref={innerRef} >
             <PlusIcon />
@@ -15,7 +16,10 @@ const AddImagePlug = ({ onClick, mobileView, innerRef }) => {
 
 AddImagePlug.propTypes = {
     onCLick: PropTypes.func,
-    mobileView: PropTypes.bool.isRequired,
+    mobileView: PropTypes.oneOfType([
+        PropTypes.bool.isRequired,
+        PropTypes.oneOf([null]).isRequired,
+    ]),
     innerRef: PropTypes.any.isRequired
 }
 

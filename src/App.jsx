@@ -7,6 +7,7 @@ import './App.css';
 import { useDispatch } from 'react-redux';
 import { disposeState } from 'store/image-selector.slice'
 import { useDispose } from 'hooks/use-dispose'
+import { ToastContainer } from 'react-toastify';
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
     <Layout>
       <SelectedImages />
       <ImageSelector />
+      <ToastContainer />
     </Layout>
   );
 }
