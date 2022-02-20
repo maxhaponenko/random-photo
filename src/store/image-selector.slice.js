@@ -4,7 +4,6 @@ import { toast } from 'react-toastify';
 
 
 const initialState = {
-    isSelectProcessStarted: false,
     isLoading: false,
     candidate: null,
     items: [],
@@ -62,7 +61,6 @@ export const imageSelectorSlice = createSlice({
             state.items = state.items.filter(item => item.id !== action.payload)
         },
         disposeState: (state) => {
-            state.isSelectProcessStarted = false
             state.isLoading = false
             state.candidate = null
         }
@@ -71,7 +69,6 @@ export const imageSelectorSlice = createSlice({
     extraReducers: {
         [fetchRandomImage.pending]: (state) => {
             state.isLoading = true;
-            state.isSelectProcessStarted = true;
             console.log('fulfilled')
         },
         [fetchRandomImage.fulfilled]: (state, action) => {

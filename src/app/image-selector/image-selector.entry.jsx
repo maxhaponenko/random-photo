@@ -11,9 +11,8 @@ import { useSelector } from 'react-redux';
 export default function ImageSelector() {
 
     const dispatch = useDispatch()
-    const isSelectProcessStarted = useSelector(state => state.imageSelector.isSelectProcessStarted)
-    const isProcessing = useSelector(state => state.imageSelector.isLoading)
     const candidate = useSelector(state => state.imageSelector.candidate)
+    const isProcessing = useSelector(state => state.imageSelector.isLoading)
 
     const loadImage = useCallback(() => {
         dispatch(fetchRandomImage())
@@ -29,8 +28,7 @@ export default function ImageSelector() {
     }
 
     const imageSection = useMemo(() => {
-        if (candidate && isSelectProcessStarted) {
-            // debugger
+        if (candidate) {
             return (
                 <img src={candidate.urls.regular} alt={candidate.description}>
                 </img>
@@ -43,7 +41,7 @@ export default function ImageSelector() {
                 </div>
             )
         }
-    }, [candidate, isSelectProcessStarted, loadImage])
+    }, [candidate, loadImage])
 
     return (
         <Styled processing={isProcessing}>
@@ -51,7 +49,7 @@ export default function ImageSelector() {
                 <div className="image-container">
                     {isProcessing ? <Loader /> : imageSection}
                 </div>
-                {isSelectProcessStarted && (
+                {candidate && (
                     <div className="actions">
                         <Button size="large" type="secondary" onClick={skipAndLoadNewImage} >Skip</Button>
                         <Button size="large" onClick={addImageToCollection}>Add</Button>

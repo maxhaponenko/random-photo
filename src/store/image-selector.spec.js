@@ -10,7 +10,6 @@ import imageSelectorReducer, {
 describe('image reducer', () => {
 
     const initialState = {
-        isSelectProcessStarted: false,
         isLoading: false,
         candidate: '',
         items: [],
@@ -19,7 +18,6 @@ describe('image reducer', () => {
 
     it('should handle initial state', () => {
         expect(imageSelectorReducer(undefined, { type: 'unknown' })).toEqual({
-            isSelectProcessStarted: false,
             isLoading: false,
             candidate: null,
             items: [],
@@ -61,7 +59,6 @@ describe('image reducer', () => {
 
     //     const startState = {
     //         ...initialState,
-    //         isSelectProcessStarted: true,
     //         candidate: mock.image1,
     //         skipedList: [ mock.image2 ],
             
