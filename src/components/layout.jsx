@@ -11,7 +11,7 @@ export default function Layout(props) {
                 {props.children}
             </main>
             <footer>
-                <span>created with <a href="https://unsplash.com/documentation" target='_blank' >Unsplash API</a></span>
+                <span>created with <a href="https://unsplash.com/documentation" target='_blank' rel="noreferrer" >Unsplash API</a></span>
             </footer>
         </StyledLayout>
     )
