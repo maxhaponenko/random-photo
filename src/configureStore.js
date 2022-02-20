@@ -1,7 +1,6 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
-import counterReducer from './features/counter/counterSlice';
+import storage from 'redux-persist/lib/storage'
 import imageSelectorReducer from './store/image-selector.slice'
 
 const persistConfig = {
@@ -10,7 +9,6 @@ const persistConfig = {
 }
 
 const rootReducer = combineReducers({
-    counter: counterReducer,
     imageSelector: imageSelectorReducer
 })
 

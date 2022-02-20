@@ -11,7 +11,7 @@ export default function Layout(props) {
                 {props.children}
             </main>
             <footer>
-                Copyright {new Date().getFullYear()}
+                <span>created with <a href="https://unsplash.com/documentation" target='_blank' >Unsplash API</a></span>
             </footer>
         </StyledLayout>
     )
@@ -46,5 +46,9 @@ const StyledLayout = styled.div`
         justify-content: center;
         align-items: center;
         box-shadow: -1px -2px 2px rgba(0,0,0,0.1);
+        font-size: 13px;
+        span {
+            opacity: 0.7;
+        }
     }
 `

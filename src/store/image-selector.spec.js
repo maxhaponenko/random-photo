@@ -3,8 +3,8 @@ import imageSelectorReducer, {
     addImage,
     skipImage,
     deleteImage,
-    disposeState,
-    fetchRandomImage
+    // disposeState,
+    // fetchRandomImage
 } from './image-selector.slice';
 
 describe('image reducer', () => {
@@ -54,16 +54,5 @@ describe('image reducer', () => {
             items: []
         });
     });
-
-    // it('should handle disposeState', () => {
-
-    //     const startState = {
-    //         ...initialState,
-    //         candidate: mock.image1,
-    //         skipedList: [ mock.image2 ],
-            
-    //     }
-
-    // })
 
 });

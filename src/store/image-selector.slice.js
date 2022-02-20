@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { ImageService } from 'api/image.service';
 import { toast } from 'react-toastify';
 
-
 const initialState = {
     isLoading: false,
     candidate: null,
@@ -17,6 +16,8 @@ export const fetchRandomImage = createAsyncThunk('image-selector/loadRandom', as
 
     const isInBlackList = (image, skipedList) => skipedList.some(item => item === image.id)
 
+    sessionStorage.setItem('isSelectionProcessStarted', 'true')
+
     async function loadRandom() {
 
         if (counter > 10) {
@@ -27,7 +28,7 @@ export const fetchRandomImage = createAsyncThunk('image-selector/loadRandom', as
             `)
         }
 
-        const newImage = await ImageService.loadRandomImage()
+        const newImage = await ImageService.emulateLoadImage()
 
         if (isInBlackList(newImage, skipedList)) {
             counter++

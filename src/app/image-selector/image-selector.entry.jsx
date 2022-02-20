@@ -7,6 +7,7 @@ import Loader from 'components/loader'
 import { fetchRandomImage, addImage, skipImage } from 'store/image-selector.slice'
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+import ImageDetails from './details'
 
 export default function ImageSelector() {
 
@@ -17,7 +18,7 @@ export default function ImageSelector() {
     const loadImage = useCallback(() => {
         dispatch(fetchRandomImage())
     }, [dispatch])
-    
+
     function addImageToCollection() {
         dispatch(addImage(candidate))
         loadImage()
@@ -30,8 +31,11 @@ export default function ImageSelector() {
     const imageSection = useMemo(() => {
         if (candidate) {
             return (
-                <img src={candidate.urls.regular} alt={candidate.description}>
-                </img>
+                <div className="candidate">
+                    <img src={candidate.urls.regular} alt={candidate.description}>
+                    </img>
+                    <ImageDetails  user={candidate.user} />
+                </div>
             )
         } else {
             return (
@@ -70,7 +74,7 @@ export default function ImageSelector() {
 
 const Styled = styled.div`
     width: auto;
-    margin-top: 50px;
+    margin-top: 30px;
     padding: 20px;
     display: flex;
     justify-content: center;
@@ -90,31 +94,41 @@ const Styled = styled.div`
 
     .container {
         width: 400px;
+        height: 400px;
         max-width: 100%;
         min-height: 400px;
+        max-height: 400px;
         margin: 0 auto;
     }
     .image-container {
-        height: 400px;
+        height: 100%;
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: top;
+
+        &:focus, &:active, &:visited {
+            outline: none;
+        }
         
         @media (max-width: 500px) {
             height: 350px;
         }
 
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            border-radius: 7px;
-            ${boxShadowDefault}
+        .candidate {
+            display: flex;
+            flex-direction: column;
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                border-radius: 7px;
+                margin-bottom: 10px;
+                ${boxShadowDefault}
+            }
         }
         .plug {
             width: 100%;
             height: 400px;
-            border: 1px solid red;
             border-radius: 7px;
             transition: all 150ms ease-in-out;
             background-color: #f4f4f459;
@@ -122,6 +136,10 @@ const Styled = styled.div`
             justify-content: center;
             align-items: center;
             border: 1px solid #8ddda0;
+            &:focus, &:active, &:visited {
+                border: 1px solid #8ddda0;
+                outline: none;
+            }
             &:hover {
                 transform: scale(1.01);
                 border-color: #7dc78e;
@@ -150,7 +168,7 @@ const Styled = styled.div`
         }
     }
     .actions {
-        margin-top: 20px;
+        margin-top: 60px;
         display: flex;
         width: 100%;
         justify-content: space-between;
