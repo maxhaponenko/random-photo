@@ -28,7 +28,7 @@ export const fetchRandomImage = createAsyncThunk('image-selector/loadRandom', as
             `)
         }
 
-        const newImage = await ImageService.emulateLoadImage()
+        const newImage = await ImageService.loadRandomImage()
 
         if (isInBlackList(newImage, skipedList)) {
             counter++
